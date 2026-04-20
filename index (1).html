@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Attendance Impact Payroll Simulator</title>
+
+<style>
+body{
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+    height: 100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    padding:25px;
+    width:340px;
+    border-radius:20px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.2);
+    text-align:center;
+    color:#333;
+}
+
+h2{
+    margin-bottom:15px;
+}
+
+input{
+    width:90%;
+    padding:10px;
+    margin:6px 0;
+    border:none;
+    border-radius:10px;
+    outline:none;
+    background: rgba(255,255,255,0.6);
+}
+
+button{
+    margin-top:10px;
+    padding:12px;
+    width:95%;
+    border:none;
+    border-radius:12px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+.result{
+    margin-top:15px;
+    padding:10px;
+    border-radius:12px;
+    background: rgba(255,255,255,0.5);
+    font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>✨ Payroll Simulator</h2>
+
+<input type="text" id="name" placeholder="Employee Name">
+
+<input type="number" id="wage" placeholder="Daily Wage">
+
+<input type="number" id="present" placeholder="Days Present">
+
+<input type="number" id="lateHours" placeholder="Late Hours">
+
+<input type="number" id="lateMinutes" placeholder="Late Minutes">
+
+<input type="number" id="absence" placeholder="Absences">
+
+<button onclick="calculatePayroll()">Calculate</button>
+
+<div class="result" id="output"></div>
+
+</div>
+
+<script>
+
+function calculatePayroll(){
+
+let name = document.getElementById("name").value;
+let wage = parseFloat(document.getElementById("wage").value);
+let present = parseInt(document.getElementById("present").value);
+let lateHours = parseFloat(document.getElementById("lateHours").value) || 0;
+let lateMinutes = parseFloat(document.getElementById("lateMinutes").value) || 0;
+let absence = parseInt(document.getElementById("absence").value) || 0;
+
+let totalLateHours = lateHours + (lateMinutes / 60);
+let hourlyRate = wage / 8;
+
+let baseSalary = present * wage;
+let lateDeduction = totalLateHours * hourlyRate;
+let absenceDeduction = absence * wage;
+
+let finalSalary = baseSalary - lateDeduction - absenceDeduction;
+
+let totalDays = present + absence;
+let attendanceScore = totalDays > 0 ? (present / totalDays) * 100 : 0;
+
+let status = "";
+if(attendanceScore >= 90){
+    status = "✨ Excellent";
+}else if(attendanceScore >= 75){
+    status = "👍 Good";
+}else{
+    status = "⚠️ Poor";
+}
+
+document.getElementById("output").innerHTML =
+"<b>👤 " + name + "</b><br><br>" +
+"💰 Base: " + baseSalary.toFixed(2) + "<br>" +
+"⏱ Late Deduction: " + lateDeduction.toFixed(2) + "<br>" +
+"❌ Absence Deduction: " + absenceDeduction.toFixed(2) + "<br><br>" +
+"<b>💵 Final Salary: " + finalSalary.toFixed(2) + "</b><br><br>" +
+"📊 Attendance: " + attendanceScore.toFixed(1) + "%<br>" +
+"🏷 Status: " + status;
+
+}
+
+</script>
+
+</body>
+</html>
