@@ -281,6 +281,58 @@ updateDashboard();
 alert("Payroll saved successfully!");
 
 }
+    function displayHistory(){
+
+let tbody = document.getElementById("historyTable").getElementsByTagName("tbody")[0];
+
+tbody.innerHTML = "";
+
+for(let i=0;i<payrollHistory.length;i++){
+
+let row = tbody.insertRow();
+
+row.insertCell(0).innerHTML = payrollHistory[i].name;
+
+row.insertCell(1).innerHTML = "₱ " + payrollHistory[i].finalSalary.toFixed(2);
+
+row.insertCell(2).innerHTML = payrollHistory[i].status;
+
+row.insertCell(3).innerHTML =
+'<button class="delete-btn" onclick="deleteRow(this)">Delete</button>';
+
+}
+
+}
+
+function updateDashboard(){
+
+let totalEmployees = payrollHistory.length;
+
+let totalPayroll = 0;
+
+for(let i=0;i<payrollHistory.length;i++){
+
+totalPayroll += payrollHistory[i].finalSalary;
+
+}
+
+let averageSalary = 0;
+
+if(totalEmployees>0){
+
+averageSalary = totalPayroll/totalEmployees;
+
+}
+
+document.getElementById("totalEmployees").innerHTML = totalEmployees;
+
+document.getElementById("totalPayroll").innerHTML =
+"₱"+totalPayroll.toFixed(2);
+
+document.getElementById("averageSalary").innerHTML =
+"₱"+averageSalary.toFixed(2);
+
+}
 </script>
 
 </body>
