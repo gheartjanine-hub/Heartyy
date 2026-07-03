@@ -372,6 +372,144 @@ displayHistory();
 updateDashboard();
 
 }
+    function printPayslip(){
+
+if(latestPayroll == null){
+
+alert("Please calculate payroll first.");
+
+return;
+
+}
+
+let printWindow = window.open("", "", "width=800,height=700");
+
+let payslip = `
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Payslip</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+padding:40px;
+color:#333;
+}
+
+.container{
+border:2px solid #764ba2;
+border-radius:12px;
+padding:25px;
+}
+
+h2{
+text-align:center;
+color:#764ba2;
+margin-bottom:5px;
+}
+
+h4{
+text-align:center;
+color:gray;
+margin-top:0;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+td{
+padding:10px;
+border-bottom:1px solid #ddd;
+}
+
+.total{
+font-size:18px;
+font-weight:bold;
+color:#764ba2;
+}
+
+.footer{
+margin-top:40px;
+text-align:right;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Attendance Impact Payroll Simulator</h2>
+
+<h4>Employee Payslip</h4>
+
+<table>
+
+<tr><td><b>Employee Name</b></td><td>${latestPayroll.name}</td></tr>
+
+<tr><td><b>Daily Wage</b></td><td>₱${latestPayroll.wage.toFixed(2)}</td></tr>
+
+<tr><td><b>Days Present</b></td><td>${latestPayroll.present}</td></tr>
+
+<tr><td><b>Late Hours</b></td><td>${latestPayroll.lateHours}</td></tr>
+
+<tr><td><b>Late Minutes</b></td><td>${latestPayroll.lateMinutes}</td></tr>
+
+<tr><td><b>Absences</b></td><td>${latestPayroll.absence}</td></tr>
+
+<tr><td><b>Base Salary</b></td><td>₱${latestPayroll.baseSalary.toFixed(2)}</td></tr>
+
+<tr><td><b>Late Deduction</b></td><td>₱${latestPayroll.lateDeduction.toFixed(2)}</td></tr>
+
+<tr><td><b>Absence Deduction</b></td><td>₱${latestPayroll.absenceDeduction.toFixed(2)}</td></tr>
+
+<tr class="total">
+
+<td>Final Salary</td>
+
+<td>₱${latestPayroll.finalSalary.toFixed(2)}</td>
+
+</tr>
+
+<tr><td><b>Attendance Score</b></td><td>${latestPayroll.attendanceScore.toFixed(1)}%</td></tr>
+
+<tr><td><b>Status</b></td><td>${latestPayroll.status}</td></tr>
+
+<tr><td><b>Date Generated</b></td><td>${new Date().toLocaleString()}</td></tr>
+
+</table>
+
+<div class="footer">
+
+_____________________________<br>
+
+Authorized Signature
+
+</div>
+
+</div>
+
+</body>
+
+</html>
+`;
+
+printWindow.document.open();
+printWindow.document.write(payslip);
+printWindow.document.close();
+
+printWindow.focus();
+printWindow.print();
+
+}
 </script>
 
 </body>
