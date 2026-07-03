@@ -107,7 +107,32 @@ color:#5b4fc9;
 .delete-btn:hover{
     background:#ff4757;
     transform:scale(1.05);
-}    
+}   
+    .history-btn{
+background:#667eea;
+color:white;
+border:none;
+padding:6px 12px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.history-btn:hover{
+background:#5563d6;
+}
+
+.delete-btn{
+background:#ff5b5b;
+color:white;
+border:none;
+padding:6px 12px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.delete-btn:hover{
+background:#e84141;
+}
 </style>
 </head>
 
@@ -181,7 +206,19 @@ outline:none;
 
 </tbody>
 </table>
+<div id="historyModal" class="modal">
 
+<div class="modal-content">
+
+<span class="close" onclick="closeHistory()">&times;</span>
+
+<h2>📂 Employee Payroll History</h2>
+
+<div id="historyContent"></div>
+
+</div>
+
+</div>
 </div>
 
 <script>
@@ -282,7 +319,7 @@ updateDashboard();
 alert("Payroll saved successfully!");
 
 }
-    function displayHistory(){
+   function displayHistory(){
 
 let tbody = document.getElementById("historyTable").getElementsByTagName("tbody")[0];
 
@@ -298,14 +335,15 @@ row.insertCell(1).innerHTML = "₱ " + payrollHistory[i].finalSalary.toFixed(2);
 
 row.insertCell(2).innerHTML = payrollHistory[i].status;
 
-row.insertCell(3).innerHTML = "TEST";
+row.insertCell(3).innerHTML =
+'<button class="history-btn" onclick="viewHistory(\'' + payrollHistory[i].name + '\')">📂 View</button>';
 
-row.insertCell(4).innerHTML = "DELETE";
+row.insertCell(4).innerHTML =
+'<button class="delete-btn" onclick="deleteRow(this)">🗑 Delete</button>';
 
 }
 
 }
-
 function updateDashboard(){
 
 let totalEmployees = payrollHistory.length;
@@ -514,23 +552,45 @@ printWindow.print();
 }
     function viewHistory(employeeName){
 
-let historyText = "Payroll History of " + employeeName + "\n\n";
+let content = "";
 
-for(let i = 0; i < payrollHistory.length; i++){
+for(let i=0;i<payrollHistory.length;i++){
 
-if(payrollHistory[i].name === employeeName){
+if(payrollHistory[i].name===employeeName){
 
-historyText +=
-"Date: " + payrollHistory[i].date + "\n" +
-"Final Salary: ₱" + payrollHistory[i].finalSalary.toFixed(2) + "\n" +
-"Attendance: " + payrollHistory[i].attendanceScore.toFixed(1) + "%\n" +
-"Status: " + payrollHistory[i].status + "\n\n";
+content +=
+`
+<div style="padding:10px;
+margin-bottom:10px;
+border-radius:10px;
+background:#f5f5ff;">
+
+<b>📅 ${payrollHistory[i].date}</b><br><br>
+
+💰 Final Salary:
+<b>₱${payrollHistory[i].finalSalary.toFixed(2)}</b><br>
+
+📊 Attendance:
+${payrollHistory[i].attendanceScore.toFixed(1)}%<br>
+
+🏷 Status:
+${payrollHistory[i].status}
+
+</div>
+`;
 
 }
 
 }
 
-alert(historyText);
+document.getElementById("historyContent").innerHTML = content;
+
+document.getElementById("historyModal").style.display="block";
+
+}
+    function closeHistory(){
+
+document.getElementById("historyModal").style.display="none";
 
 }
 </script>
