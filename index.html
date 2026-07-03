@@ -185,170 +185,86 @@ outline:none;
 
 <script>
  let payrollHistory = [];
-
 let latestPayroll = null;
 
 function calculatePayroll(){
 
-let name = document.getElementById("name").value;
-let wage = parseFloat(document.getElementById("wage").value);
-let present = parseInt(document.getElementById("present").value);
+let name = document.getElementById("name").value.trim();
+let wage = parseFloat(document.getElementById("wage").value) || 0;
+let present = parseInt(document.getElementById("present").value) || 0;
 let lateHours = parseFloat(document.getElementById("lateHours").value) || 0;
 let lateMinutes = parseFloat(document.getElementById("lateMinutes").value) || 0;
 let absence = parseInt(document.getElementById("absence").value) || 0;
 
-let totalLateHours = lateHours + (lateMinutes / 60);
+if(name==""){
+alert("Please enter the employee name.");
+return;
+}
+
+let totalLateHours = lateHours + (lateMinutes/60);
+
 let hourlyRate = wage / 8;
 
-let baseSalary = present * wage;
+let baseSalary = wage * present;
+
 let lateDeduction = totalLateHours * hourlyRate;
+
 let absenceDeduction = absence * wage;
 
 let finalSalary = baseSalary - lateDeduction - absenceDeduction;
 
 let totalDays = present + absence;
-let attendanceScore = totalDays > 0 ? (present / totalDays) * 100 : 0;
 
-let status = "";
-if(attendanceScore >= 90){
-    status = "✨ Excellent";
-}else if(attendanceScore >= 75){
-    status = "👍 Good";
-}else{
-    status = "⚠️ Poor";
+let attendanceScore = totalDays > 0 ? (present/totalDays)*100 : 0;
+
+let status="";
+
+if(attendanceScore>=90){
+status="✨ Excellent";
 }
-latestPayroll = {
-    name: name,
-    wage: wage,
-    present: present,
-    lateHours: lateHours,
-    lateMinutes: lateMinutes,
-    absence: absence,
-    baseSalary: baseSalary,
-    lateDeduction: lateDeduction,
-    absenceDeduction: absenceDeduction,
-    finalSalary: finalSalary,
-    attendanceScore: attendanceScore,
-    status: status
+else if(attendanceScore>=75){
+status="👍 Good";
+}
+else{
+status="⚠️ Poor";
+}
+
+latestPayroll={
+name:name,
+wage:wage,
+present:present,
+lateHours:lateHours,
+lateMinutes:lateMinutes,
+absence:absence,
+baseSalary:baseSalary,
+lateDeduction:lateDeduction,
+absenceDeduction:absenceDeduction,
+finalSalary:finalSalary,
+attendanceScore:attendanceScore,
+status:status
 };
 
-document.getElementById("output").innerHTML =
-"<b>👤 " + name + "</b><br><br>" +
-"💰 Base: " + baseSalary.toFixed(2) + "<br>" +
-"⏱ Late Deduction: " + lateDeduction.toFixed(2) + "<br>" +
-"❌ Absence Deduction: " + absenceDeduction.toFixed(2) + "<br><br>" +
-"<b>💵 Final Salary: " + finalSalary.toFixed(2) + "</b><br><br>" +
-"📊 Attendance: " + attendanceScore.toFixed(1) + "%<br>" +
-"🏷 Status: " + status;
+document.getElementById("output").innerHTML=
 
-} 
-   function savePayroll(){
+"<b>👤 "+name+"</b><br><br>"+
 
-if(latestPayroll == null){
-    alert("Please calculate the payroll first.");
-    return;
-}
+"💰 Base Salary: ₱"+baseSalary.toFixed(2)+"<br>"+
 
-payrollHistory.push(latestPayroll);
+"⏱ Late Deduction: ₱"+lateDeduction.toFixed(2)+"<br>"+
 
-let table = document.getElementById("historyTable").getElementsByTagName("tbody")[0];
+"❌ Absence Deduction: ₱"+absenceDeduction.toFixed(2)+"<br><br>"+
 
-let row = table.insertRow();
+"<b>💵 Final Salary: ₱"+finalSalary.toFixed(2)+"</b><br><br>"+
 
-row.insertCell(0).innerHTML = latestPayroll.name;
-row.insertCell(1).innerHTML = "₱ " + latestPayroll.finalSalary.toFixed(2);
-row.insertCell(2).innerHTML = latestPayroll.status;
+"📊 Attendance Score: "+attendanceScore.toFixed(1)+"%<br>"+
 
-let actionCell = row.insertCell(3);
-
-actionCell.innerHTML =
-'<button class="delete-btn" onclick="deleteRow(this)">Delete</button>';
-updateDashboard();
-alert("Payroll saved successfully!");
-
-}function updateDashboard(){
-
-let totalEmployees = payrollHistory.length;
-
-let totalPayroll = 0;
-
-for(let i=0;i<payrollHistory.length;i++){
-
-totalPayroll += Number(payrollHistory[i].finalSalary);
-}
-
-let averageSalary = 0;
-
-if(totalEmployees>0){
-
-averageSalary = totalPayroll/totalEmployees;
+"🏷 Status: "+status;
 
 }
 
-document.getElementById("totalEmployees").innerHTML = totalEmployees;
+function savePayroll(){
 
-document.getElementById("totalPayroll").innerHTML =
-"₱"+totalPayroll.toFixed(2);
-
-document.getElementById("averageSalary").innerHTML =
-"₱"+averageSalary.toFixed(2);
-
-}
-    function searchPayroll(){
-
-let input = document.getElementById("searchEmployee").value.toUpperCase();
-
-let table = document.getElementById("historyTable");
-
-let rows = table.getElementsByTagName("tr");
-
-for(let i = 1; i < rows.length; i++){
-
-let employee = rows[i].cells[0].innerHTML.toUpperCase();
-
-if(employee.indexOf(input) > -1){
-
-rows[i].style.display = "";
-
-}else{
-
-rows[i].style.display = "none";
-
-}
-
-}
-
-}
-    function deleteRow(button){
-
-let row = button.parentNode.parentNode;
-
-row.remove();
-
-// Remove from payrollHistory array
-let newHistory = [];
-
-let table = document.getElementById("historyTable")
-.getElementsByTagName("tbody")[0];
-
-for(let i=0;i<table.rows.length;i++){
-
-newHistory.push({
-name: table.rows[i].cells[0].innerHTML,
-salary: table.rows[i].cells[1].innerHTML.replace("₱ ",""),
-status: table.rows[i].cells[2].innerHTML
-});
-
-}
-
-payrollHistory = newHistory;
-
-updateDashboard();
-
-}
-    function printPayslip(){
-
-if(latestPayroll == null){
+if(latestPayroll==null){
 
 alert("Please calculate payroll first.");
 
@@ -356,101 +272,15 @@ return;
 
 }
 
-let printWindow = window.open("", "", "width=700,height=800");
+payrollHistory.push(latestPayroll);
 
-printWindow.document.write(`
-<html>
+displayHistory();
 
-<head>
+updateDashboard();
 
-<title>Payslip</title>
-
-<style>
-
-body{
-font-family:Arial;
-padding:30px;
-}
-
-h2{
-text-align:center;
-color:#764ba2;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:20px;
-}
-
-td{
-padding:8px;
-border-bottom:1px solid #ddd;
-}
-
-.footer{
-margin-top:30px;
-text-align:right;
-}
-
-</style>
-
-</head>
-
-<body>
-
-<h2>Attendance Impact Payroll Simulation System</h2>
-
-<table>
-
-<tr><td><b>Employee Name</b></td><td>${latestPayroll.name}</td></tr>
-
-<tr><td><b>Daily Wage</b></td><td>₱${latestPayroll.wage.toFixed(2)}</td></tr>
-
-<tr><td><b>Days Present</b></td><td>${latestPayroll.present}</td></tr>
-
-<tr><td><b>Late Hours</b></td><td>${latestPayroll.lateHours}</td></tr>
-
-<tr><td><b>Late Minutes</b></td><td>${latestPayroll.lateMinutes}</td></tr>
-
-<tr><td><b>Absences</b></td><td>${latestPayroll.absence}</td></tr>
-
-<tr><td><b>Base Salary</b></td><td>₱${latestPayroll.baseSalary.toFixed(2)}</td></tr>
-
-<tr><td><b>Late Deduction</b></td><td>₱${latestPayroll.lateDeduction.toFixed(2)}</td></tr>
-
-<tr><td><b>Absence Deduction</b></td><td>₱${latestPayroll.absenceDeduction.toFixed(2)}</td></tr>
-
-<tr><td><b>Final Salary</b></td><td><b>₱${latestPayroll.finalSalary.toFixed(2)}</b></td></tr>
-
-<tr><td><b>Attendance Score</b></td><td>${latestPayroll.attendanceScore.toFixed(1)}%</td></tr>
-
-<tr><td><b>Status</b></td><td>${latestPayroll.status}</td></tr>
-
-<tr><td><b>Date Generated</b></td><td>${new Date().toLocaleString()}</td></tr>
-
-</table>
-
-<div class="footer">
-
-_________________________<br>
-
-Authorized Signature
-
-</div>
-
-</body>
-
-</html>
-`);
-
-printWindow.document.close();
-
-printWindow.print();
+alert("Payroll saved successfully!");
 
 }
-   
-
 </script>
 
 </body>
