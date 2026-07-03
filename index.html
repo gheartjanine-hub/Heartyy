@@ -172,6 +172,7 @@ outline:none;
 <th>Name</th>
 <th>Final Salary</th>
 <th>Status</th>
+<th>History</th>
 <th>Action</th>
 </tr>
 </thead>
@@ -229,21 +230,21 @@ else{
 status="⚠️ Poor";
 }
 
-latestPayroll={
-name:name,
-wage:wage,
-present:present,
-lateHours:lateHours,
-lateMinutes:lateMinutes,
-absence:absence,
-baseSalary:baseSalary,
-lateDeduction:lateDeduction,
-absenceDeduction:absenceDeduction,
-finalSalary:finalSalary,
-attendanceScore:attendanceScore,
-status:status
+latestPayroll = {
+    name: name,
+    wage: wage,
+    present: present,
+    lateHours: lateHours,
+    lateMinutes: lateMinutes,
+    absence: absence,
+    baseSalary: baseSalary,
+    lateDeduction: lateDeduction,
+    absenceDeduction: absenceDeduction,
+    finalSalary: finalSalary,
+    attendanceScore: attendanceScore,
+    status: status,
+    date: new Date().toLocaleString()
 };
-
 document.getElementById("output").innerHTML=
 
 "<b>👤 "+name+"</b><br><br>"+
@@ -298,6 +299,9 @@ row.insertCell(1).innerHTML = "₱ " + payrollHistory[i].finalSalary.toFixed(2);
 row.insertCell(2).innerHTML = payrollHistory[i].status;
 
 row.insertCell(3).innerHTML =
+'<button onclick="viewHistory(\'' + payrollHistory[i].name + '\')">📂 View</button>';
+
+row.insertCell(4).innerHTML =
 '<button class="delete-btn" onclick="deleteRow(this)">Delete</button>';
 
 }
@@ -508,6 +512,27 @@ printWindow.document.close();
 
 printWindow.focus();
 printWindow.print();
+
+}
+    function viewHistory(employeeName){
+
+let historyText = "Payroll History of " + employeeName + "\n\n";
+
+for(let i = 0; i < payrollHistory.length; i++){
+
+if(payrollHistory[i].name === employeeName){
+
+historyText +=
+"Date: " + payrollHistory[i].date + "\n" +
+"Final Salary: ₱" + payrollHistory[i].finalSalary.toFixed(2) + "\n" +
+"Attendance: " + payrollHistory[i].attendanceScore.toFixed(1) + "%\n" +
+"Status: " + payrollHistory[i].status + "\n\n";
+
+}
+
+}
+
+alert(historyText);
 
 }
 </script>
