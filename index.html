@@ -90,7 +90,34 @@ button:hover{
 <button onclick="savePayroll()">Save Payroll</button>
 
 <div class="result" id="output"></div>
-    <h3>Payroll History</h3>
+   <h3>Payroll History</h3>
+
+<div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:15px;">
+
+<div style="background:#E3F2FD;padding:10px;border-radius:10px;flex:1;">
+<b>Total Employees</b><br>
+<span id="totalEmployees">0</span>
+</div>
+
+<div style="background:#E8F5E9;padding:10px;border-radius:10px;flex:1;">
+<b>Total Payroll</b><br>
+<span id="totalPayroll">₱0.00</span>
+</div>
+
+<div style="background:#FFF3E0;padding:10px;border-radius:10px;flex:1;">
+<b>Average Salary</b><br>
+<span id="averageSalary">₱0.00</span>
+</div>
+
+</div>
+
+<input
+type="text"
+id="searchEmployee"
+placeholder="🔍 Search Employee"
+onkeyup="searchPayroll()"
+style="width:95%;padding:8px;margin-bottom:15px;">
+    
 
 <table id="historyTable" border="1" style="width:100%; margin-top:15px; border-collapse:collapse;">
 <thead>
@@ -98,6 +125,7 @@ button:hover{
 <th>Name</th>
 <th>Final Salary</th>
 <th>Status</th>
+<th>Action</th>
 </tr>
 </thead>
 
@@ -157,24 +185,36 @@ document.getElementById("output").innerHTML =
 "🏷 Status: " + status;
 
 } 
-    function savePayroll(){
+   function savePayroll(){
 
-if(latestPayroll == null){
-    alert("Please calculate the payroll first.");
-    return;
+if(latestPayroll==null){
+
+alert("Please calculate payroll first.");
+
+return;
+
 }
 
 payrollHistory.push(latestPayroll);
 
-let table = document.getElementById("historyTable").getElementsByTagName("tbody")[0];
+localStorage.setItem("payrollHistory",JSON.stringify(payrollHistory));
 
-let row = table.insertRow();
-
-row.insertCell(0).innerHTML = latestPayroll.name;
-row.insertCell(1).innerHTML = "₱ " + latestPayroll.salary;
-row.insertCell(2).innerHTML = latestPayroll.status;
+displayHistory();
 
 alert("Payroll saved successfully!");
+
+}
+    function deleteRow(button){
+
+let row = button.parentNode.parentNode;
+
+let index = row.rowIndex - 1;
+
+payrollHistory.splice(index,1);
+
+localStorage.setItem("payrollHistory",JSON.stringify(payrollHistory));
+
+displayHistory();
 
 }
 
