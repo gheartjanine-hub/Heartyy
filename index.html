@@ -62,6 +62,34 @@ button:hover{
     background: rgba(255,255,255,0.5);
     font-size:14px;
 }
+    .dashboard{
+display:flex;
+justify-content:space-between;
+gap:10px;
+margin-top:15px;
+margin-bottom:15px;
+}
+
+.card{
+flex:1;
+background:rgba(255,255,255,0.45);
+padding:10px;
+border-radius:12px;
+box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+
+.card h4{
+font-size:13px;
+margin:0;
+color:#555;
+}
+
+.card p{
+font-size:18px;
+font-weight:bold;
+margin-top:8px;
+color:#5b4fc9;
+}
 </style>
 </head>
 
@@ -91,7 +119,24 @@ button:hover{
 
 <div class="result" id="output"></div>
    <h3>Payroll History</h3>
+<div class="dashboard">
 
+<div class="card">
+<h4>Total Employees</h4>
+<p id="totalEmployees">0</p>
+</div>
+
+<div class="card">
+<h4>Total Payroll</h4>
+<p id="totalPayroll">₱0.00</p>
+</div>
+
+<div class="card">
+<h4>Average Salary</h4>
+<p id="averageSalary">₱0.00</p>
+</div>
+
+</div>
 
 <table id="historyTable" border="1" style="width:100%; margin-top:15px; border-collapse:collapse;">
 <thead>
@@ -175,8 +220,36 @@ let row = table.insertRow();
 row.insertCell(0).innerHTML = latestPayroll.name;
 row.insertCell(1).innerHTML = "₱ " + latestPayroll.salary;
 row.insertCell(2).innerHTML = latestPayroll.status;
-
+updateDashboard();
 alert("Payroll saved successfully!");
+
+}function updateDashboard(){
+
+let totalEmployees = payrollHistory.length;
+
+let totalPayroll = 0;
+
+for(let i=0;i<payrollHistory.length;i++){
+
+totalPayroll += Number(payrollHistory[i].salary);
+
+}
+
+let averageSalary = 0;
+
+if(totalEmployees>0){
+
+averageSalary = totalPayroll/totalEmployees;
+
+}
+
+document.getElementById("totalEmployees").innerHTML = totalEmployees;
+
+document.getElementById("totalPayroll").innerHTML =
+"₱"+totalPayroll.toFixed(2);
+
+document.getElementById("averageSalary").innerHTML =
+"₱"+averageSalary.toFixed(2);
 
 }
    
