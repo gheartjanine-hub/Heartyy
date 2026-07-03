@@ -333,8 +333,26 @@ if(latestPayroll == null){
     return;
 }
 
-payrollHistory.push(latestPayroll);
+let employee = payrollHistory.find(emp => emp.name === latestPayroll.name);
 
+if(employee){
+    employee.history.push({
+        date: new Date().toLocaleString(),
+        finalSalary: latestPayroll.finalSalary,
+        attendanceScore: latestPayroll.attendanceScore,
+        status: latestPayroll.status
+    });
+}else{
+
+    latestPayroll.history = [{
+        date: new Date().toLocaleString(),
+        finalSalary: latestPayroll.finalSalary,
+        attendanceScore: latestPayroll.attendanceScore,
+        status: latestPayroll.status
+    }];
+
+    payrollHistory.push(latestPayroll);
+}
 displayHistory();
 
 updateDashboard();
