@@ -137,6 +137,20 @@ color:#5b4fc9;
 </div>
 
 </div>
+    <input
+type="text"
+id="searchEmployee"
+placeholder="🔍 Search Employee"
+onkeyup="searchPayroll()"
+style="
+width:95%;
+padding:10px;
+margin-bottom:15px;
+border:none;
+border-radius:10px;
+background:rgba(255,255,255,.6);
+outline:none;
+">
 
 <table id="historyTable" border="1" style="width:100%; margin-top:15px; border-collapse:collapse;">
 <thead>
@@ -250,6 +264,31 @@ document.getElementById("totalPayroll").innerHTML =
 
 document.getElementById("averageSalary").innerHTML =
 "₱"+averageSalary.toFixed(2);
+
+}
+    function searchPayroll(){
+
+let input = document.getElementById("searchEmployee").value.toUpperCase();
+
+let table = document.getElementById("historyTable");
+
+let rows = table.getElementsByTagName("tr");
+
+for(let i = 1; i < rows.length; i++){
+
+let employee = rows[i].cells[0].innerHTML.toUpperCase();
+
+if(employee.indexOf(input) > -1){
+
+rows[i].style.display = "";
+
+}else{
+
+rows[i].style.display = "none";
+
+}
+
+}
 
 }
    
