@@ -231,7 +231,7 @@ latestPayroll = {
     attendanceScore: attendanceScore,
     status: status
 };
-};
+
 document.getElementById("output").innerHTML =
 "<b>👤 " + name + "</b><br><br>" +
 "💰 Base: " + baseSalary.toFixed(2) + "<br>" +
@@ -256,7 +256,7 @@ let table = document.getElementById("historyTable").getElementsByTagName("tbody"
 let row = table.insertRow();
 
 row.insertCell(0).innerHTML = latestPayroll.name;
-row.insertCell(1).innerHTML = "₱ " + latestPayroll.salary;
+row.insertCell(1).innerHTML = "₱ " + latestPayroll.finalSalary.toFixed(2);
 row.insertCell(2).innerHTML = latestPayroll.status;
 
 let actionCell = row.insertCell(3);
@@ -274,8 +274,7 @@ let totalPayroll = 0;
 
 for(let i=0;i<payrollHistory.length;i++){
 
-totalPayroll += Number(payrollHistory[i].salary);
-
+totalPayroll += Number(payrollHistory[i].finalSalary);
 }
 
 let averageSalary = 0;
