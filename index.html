@@ -333,6 +333,45 @@ document.getElementById("averageSalary").innerHTML =
 "₱"+averageSalary.toFixed(2);
 
 }
+    function searchPayroll(){
+
+let input = document.getElementById("searchEmployee").value.toUpperCase();
+
+let table = document.getElementById("historyTable");
+
+let rows = table.getElementsByTagName("tr");
+
+for(let i = 1; i < rows.length; i++){
+
+let employee = rows[i].cells[0].innerHTML.toUpperCase();
+
+if(employee.indexOf(input) > -1){
+
+rows[i].style.display = "";
+
+}else{
+
+rows[i].style.display = "none";
+
+}
+
+}
+
+}
+
+function deleteRow(button){
+
+let row = button.parentNode.parentNode;
+
+let index = row.rowIndex - 1;
+
+payrollHistory.splice(index,1);
+
+displayHistory();
+
+updateDashboard();
+
+}
 </script>
 
 </body>
