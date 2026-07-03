@@ -90,6 +90,24 @@ font-weight:bold;
 margin-top:8px;
 color:#5b4fc9;
 }
+
+.delete-btn{
+    width:auto;
+    padding:6px 12px;
+    margin:0;
+    border:none;
+    border-radius:8px;
+    background:#ff6b81;
+    color:white;
+    font-size:13px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.delete-btn:hover{
+    background:#ff4757;
+    transform:scale(1.05);
+}    
 </style>
 </head>
 
@@ -158,7 +176,7 @@ outline:none;
 <th>Name</th>
 <th>Final Salary</th>
 <th>Status</th>
-
+<th>Action</th>
 </tr>
 </thead>
 
@@ -234,6 +252,11 @@ let row = table.insertRow();
 row.insertCell(0).innerHTML = latestPayroll.name;
 row.insertCell(1).innerHTML = "₱ " + latestPayroll.salary;
 row.insertCell(2).innerHTML = latestPayroll.status;
+
+let actionCell = row.insertCell(3);
+
+actionCell.innerHTML =
+'<button class="delete-btn" onclick="deleteRow(this)">Delete</button>';
 updateDashboard();
 alert("Payroll saved successfully!");
 
@@ -289,6 +312,33 @@ rows[i].style.display = "none";
 }
 
 }
+
+}
+    function deleteRow(button){
+
+let row = button.parentNode.parentNode;
+
+row.remove();
+
+// Remove from payrollHistory array
+let newHistory = [];
+
+let table = document.getElementById("historyTable")
+.getElementsByTagName("tbody")[0];
+
+for(let i=0;i<table.rows.length;i++){
+
+newHistory.push({
+name: table.rows[i].cells[0].innerHTML,
+salary: table.rows[i].cells[1].innerHTML.replace("₱ ",""),
+status: table.rows[i].cells[2].innerHTML
+});
+
+}
+
+payrollHistory = newHistory;
+
+updateDashboard();
 
 }
    
