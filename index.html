@@ -49,32 +49,15 @@ button{
     font-size:16px;
     cursor:pointer;
     transition:0.3s;
-}.icon-btn{
-    width:45px !important;
-    height:45px !important;
-    min-width:45px;
-    padding:0 !important;
-    margin:0;
-    border:none;
-    border-radius:10px;
-    cursor:pointer;
-    font-size:20px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
+} function viewHistory(employeeName){
 
-.view-btn{
-    background:#4F7DF3;
-}
+let content = "";
 
-.delete-btn{
-    background:#FF5E7E;
-}
+for(let i=0;i<payrollHistory.length;i++){
 
-.view-btn:hover,
-.delete-btn:hover{
-    transform:scale(1.08);
+if(payrollHistory[i].name===employeeName){
+
+content +=
 }
 button:hover{
     transform:scale(1.05);
