@@ -302,12 +302,9 @@ document.getElementById("output").innerHTML=
 
 function savePayroll(){
 
-if(latestPayroll==null){
-
-alert("Please calculate payroll first.");
-
-return;
-
+if(latestPayroll == null){
+    alert("Please calculate payroll first.");
+    return;
 }
 
 payrollHistory.push(latestPayroll);
@@ -319,7 +316,7 @@ updateDashboard();
 alert("Payroll saved successfully!");
 
 }
-   function displayHistory(){
+  function displayHistory(){
 
 let tbody = document.getElementById("historyTable").getElementsByTagName("tbody")[0];
 
@@ -330,16 +327,28 @@ for(let i=0;i<payrollHistory.length;i++){
 let row = tbody.insertRow();
 
 row.insertCell(0).innerHTML = payrollHistory[i].name;
-
 row.insertCell(1).innerHTML = "₱ " + payrollHistory[i].finalSalary.toFixed(2);
-
 row.insertCell(2).innerHTML = payrollHistory[i].status;
 
-row.insertCell(3).innerHTML =
-'<button class="history-btn" onclick="viewHistory(\'' + payrollHistory[i].name + '\')">📂 View</button>';
+let historyCell = row.insertCell(3);
+historyCell.innerHTML = "";
 
-row.insertCell(4).innerHTML =
-'<button class="delete-btn" onclick="deleteRow(this)">🗑 Delete</button>';
+let viewBtn = document.createElement("button");
+viewBtn.innerHTML = "📂 View";
+viewBtn.onclick = function(){
+    viewHistory(payrollHistory[i].name);
+};
+historyCell.appendChild(viewBtn);
+
+let actionCell = row.insertCell(4);
+
+let deleteBtn = document.createElement("button");
+deleteBtn.innerHTML = "🗑 Delete";
+deleteBtn.onclick = function(){
+    deleteRow(deleteBtn);
+};
+
+actionCell.appendChild(deleteBtn);
 
 }
 
