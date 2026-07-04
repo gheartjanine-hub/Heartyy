@@ -414,7 +414,9 @@ alert("Payroll saved successfully!");
 }
  function displayHistory(){
 
-let tbody = document.getElementById("historyTable").getElementsByTagName("tbody")[0];
+let table = document.getElementById("historyTable");
+
+let tbody = table.querySelector("tbody");
 
 tbody.innerHTML = "";
 
