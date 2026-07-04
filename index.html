@@ -275,7 +275,7 @@ outline:none;
 <!-- ADD THIS HERE -->
 <h3 style="margin-top:20px;">📋 Payroll History</h3>
 
-<table id="historyTable">
+
 <table id="historyTable" border="1" style="width:100%; margin-top:15px; border-collapse:collapse;">
 <thead>
 <tr>
@@ -516,6 +516,8 @@ let row = button.parentNode.parentNode;
 let index = row.rowIndex - 1;
 
 payrollHistory.splice(index,1);
+console.log(latestPayroll);
+console.log(payrollHistory);
 
 displayHistory();
 
