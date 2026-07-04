@@ -343,24 +343,35 @@ updateDashboard();
 alert("Payroll saved successfully!");
 
 }
-  function displayHistory(){
+ function displayHistory(){
+
+let tbody = document.getElementById("historyTable").getElementsByTagName("tbody")[0];
+
+tbody.innerHTML = "";
+
+for(let i=0;i<payrollHistory.length;i++){
+
+let row = tbody.insertRow();
+
+row.insertCell(0).innerHTML = payrollHistory[i].name;
+
+row.insertCell(1).innerHTML =
+"₱ " + payrollHistory[i].finalSalary.toFixed(2);
+
+row.insertCell(2).innerHTML =
+payrollHistory[i].status;
+
+let historyCell = row.insertCell(3);
 
 historyCell.innerHTML =
-'<button class="icon-btn view-btn" onclick="viewHistory(\'' + payrollHistory[i].name + '\')">📂</button>';
-
-actionCell.innerHTML =
-'<button class="icon-btn delete-btn" onclick="deleteRow(this)">🗑</button>';
-historyCell.appendChild(viewBtn);
+'<button class="icon-btn view-btn" onclick="viewHistory(\'' +
+payrollHistory[i].name +
+'\')">📂</button>';
 
 let actionCell = row.insertCell(4);
 
-let deleteBtn = document.createElement("button");
-deleteBtn.innerHTML = "🗑 Delete";
-deleteBtn.onclick = function(){
-    deleteRow(deleteBtn);
-};
-
-actionCell.appendChild(deleteBtn);
+actionCell.innerHTML =
+'<button class="icon-btn delete-btn" onclick="deleteRow(this)">🗑</button>';
 
 }
 
