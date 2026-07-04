@@ -517,23 +517,93 @@ displayHistory();
 updateDashboard();
 
 }
-    function printPayslip(){
+function printPayslip(){
 
-if(latestPayroll == null){
+    if(latestPayroll == null){
+        alert("Please calculate payroll first.");
+        return;
+    }
 
-alert("Please calculate payroll first.");
+    let printWindow = window.open("", "", "width=800,height=700");
 
-return;
+    printWindow.document.write(`
+    <html>
+    <head>
+        <title>Payslip</title>
+        <style>
+            body{
+                font-family:Arial;
+                padding:30px;
+            }
 
-}
+            h2{
+                text-align:center;
+                color:#764ba2;
+            }
 
-let printWindow = window.open("", "", "width=800,height=700");
+            table{
+                width:100%;
+                border-collapse:collapse;
+                margin-top:20px;
+            }
 
-let payslip = `
+            td{
+                padding:8px;
+                border-bottom:1px solid #ddd;
+            }
 
-document.getElementById("historyContent").innerHTML = content;
+            .footer{
+                margin-top:40px;
+                text-align:right;
+            }
+        </style>
+    </head>
 
-document.getElementById("historyModal").style.display="block";
+    <body>
+
+    <h2>Attendance Impact Payroll Simulation System</h2>
+
+    <table>
+
+    <tr><td><b>Employee Name</b></td><td>${latestPayroll.name}</td></tr>
+
+    <tr><td><b>Daily Wage</b></td><td>₱${latestPayroll.wage.toFixed(2)}</td></tr>
+
+    <tr><td><b>Days Present</b></td><td>${latestPayroll.present}</td></tr>
+
+    <tr><td><b>Late Hours</b></td><td>${latestPayroll.lateHours}</td></tr>
+
+    <tr><td><b>Late Minutes</b></td><td>${latestPayroll.lateMinutes}</td></tr>
+
+    <tr><td><b>Absences</b></td><td>${latestPayroll.absence}</td></tr>
+
+    <tr><td><b>Base Salary</b></td><td>₱${latestPayroll.baseSalary.toFixed(2)}</td></tr>
+
+    <tr><td><b>Late Deduction</b></td><td>₱${latestPayroll.lateDeduction.toFixed(2)}</td></tr>
+
+    <tr><td><b>Absence Deduction</b></td><td>₱${latestPayroll.absenceDeduction.toFixed(2)}</td></tr>
+
+    <tr><td><b>Final Salary</b></td><td><b>₱${latestPayroll.finalSalary.toFixed(2)}</b></td></tr>
+
+    <tr><td><b>Attendance Score</b></td><td>${latestPayroll.attendanceScore.toFixed(1)}%</td></tr>
+
+    <tr><td><b>Status</b></td><td>${latestPayroll.status}</td></tr>
+
+    <tr><td><b>Date Generated</b></td><td>${latestPayroll.date}</td></tr>
+
+    </table>
+
+    <div class="footer">
+    _________________________<br>
+    Authorized Signature
+    </div>
+
+    </body>
+    </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.print();
 
 }
     function closeHistory(){
