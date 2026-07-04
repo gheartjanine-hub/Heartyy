@@ -49,16 +49,7 @@ button{
     font-size:16px;
     cursor:pointer;
     transition:0.3s;
-} function viewHistory(employeeName){
-
-let content = "";
-
-for(let i=0;i<payrollHistory.length;i++){
-
-if(payrollHistory[i].name===employeeName){
-
-content +=
-}
+} 
 button:hover{
     transform:scale(1.05);
 }
@@ -516,8 +507,7 @@ let row = button.parentNode.parentNode;
 let index = row.rowIndex - 1;
 
 payrollHistory.splice(index,1);
-console.log(latestPayroll);
-console.log(payrollHistory);
+
 
 displayHistory();
 
@@ -611,6 +601,27 @@ function printPayslip(){
 
     printWindow.document.close();
     printWindow.print();
+
+} function viewHistory(employeeName){
+
+let content = "";
+
+for(let i=0;i<payrollHistory.length;i++){
+
+    if(payrollHistory[i].name === employeeName){
+
+        content +=
+        "<p><b>Date:</b> " + payrollHistory[i].date + "</p>" +
+        "<p><b>Final Salary:</b> ₱" + payrollHistory[i].finalSalary.toFixed(2) + "</p>" +
+        "<p><b>Attendance:</b> " + payrollHistory[i].attendanceScore.toFixed(1) + "%</p>" +
+        "<p><b>Status:</b> " + payrollHistory[i].status + "</p><hr>";
+
+    }
+
+}
+
+document.getElementById("historyContent").innerHTML = content;
+document.getElementById("historyModal").style.display = "block";
 
 }
     function closeHistory(){
