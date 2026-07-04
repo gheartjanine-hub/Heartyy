@@ -414,37 +414,27 @@ alert("Payroll saved successfully!");
 }
  function displayHistory(){
 
-let table = document.getElementById("historyTable");
+    let tbody = document.querySelector("#historyTable tbody");
 
-let tbody = table.querySelector("tbody");
+    tbody.innerHTML = "";
 
-tbody.innerHTML = "";
+    payrollHistory.forEach(function(employee){
 
-for(let i=0;i<payrollHistory.length;i++){
+        let row = tbody.insertRow();
 
-let row = tbody.insertRow();
+        row.insertCell(0).innerHTML = employee.name;
+        row.insertCell(1).innerHTML = "₱ " + employee.finalSalary.toFixed(2);
+        row.insertCell(2).innerHTML = employee.status;
 
-row.insertCell(0).innerHTML = payrollHistory[i].name;
+        row.insertCell(3).innerHTML =
+        '<button class="icon-btn view-btn" onclick="viewHistory(\'' +
+        employee.name +
+        '\')">📂</button>';
 
-row.insertCell(1).innerHTML =
-"₱ " + payrollHistory[i].finalSalary.toFixed(2);
+        row.insertCell(4).innerHTML =
+        '<button class="icon-btn delete-btn" onclick="deleteRow(this)">🗑</button>';
 
-row.insertCell(2).innerHTML =
-payrollHistory[i].status;
-
-let historyCell = row.insertCell(3);
-
-historyCell.innerHTML =
-'<button class="icon-btn view-btn" onclick="viewHistory(\'' +
-payrollHistory[i].name +
-'\')">📂</button>';
-
-let actionCell = row.insertCell(4);
-
-actionCell.innerHTML =
-'<button class="icon-btn delete-btn" onclick="deleteRow(this)">🗑</button>';
-
-}
+    });
 
 }
 function updateDashboard(){
